@@ -16,7 +16,7 @@
     "standard": "^16.0.3"
   },
   "scripts": {
-    "start": "standard --fix && nodemon app.js"
+    "start": "nodemon app.js"
   },
   "author": "milla",
   "license": "ISC"

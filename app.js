@@ -1,4 +1,4 @@
-// use depedensis app to help build you app
+// use depedensis  to help build you app
 const express = require('express')
 const app = express()
 
