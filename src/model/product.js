@@ -77,7 +77,14 @@ module.exports = {
         'DELETE FROM product WHERE product_id = ?',
         id,
         (error, result) => {
-          !error ? resolve(result) : reject(new Error(error))
+          if (!error) {
+            const newResult = {
+              id: id
+            }
+            resolve(newResult)
+          } else {
+            reject(new Error(error))
+          }
         }
       )
     })
