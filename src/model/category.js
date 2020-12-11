@@ -7,5 +7,35 @@ module.exports = {
         !error ? resolve(result) : reject(new Error(error))
       })
     })
+  },
+  getCategoryModelById: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'SELECT * FROM  category WHERE category_id = ?',
+        id,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  postCategoryModel: (setData) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'INSERT INTO category SET ?',
+        setData,
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              category_id: result.insertId,
+              ...setData
+            }
+            resolve(newResult)
+          } else {
+            reject(new Error(error))
+          }
+        }
+      )
+    })
   }
 }

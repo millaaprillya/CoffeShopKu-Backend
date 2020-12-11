@@ -12,9 +12,11 @@ const qs = require('querystring')
 module.exports = {
   getProduct: async (request, response) => {
     try {
-      let { page, limit } = request.query
+      let { page, limit, search, sort } = request.query
       page = parseInt(page)
       limit = parseInt(limit)
+      search = ''
+      sort = 'product_price'
       const totalData = await getProductCountModel()
       const totalPage = Math.ceil(totalData / limit)
       const offset = page * limit - limit
@@ -36,7 +38,7 @@ module.exports = {
         nextLink: nextLink && `http://localhost:3000/product?${nextLink}`,
         prevLink: prevLink && `http://localhost:3000/product?${prevLink}`
       }
-      const result = await getProductModel(limit, offset)
+      const result = await getProductModel(limit, offset, search, sort)
       return helper.response(
         response,
         200,
@@ -103,14 +105,14 @@ module.exports = {
         category_id,
         product_name,
         product_price,
-        product_updated_at: new Date(),
-        product_status
+        product_status,
+        product_updated_at: new Date()
       }
       const checkId = await getProductByIdModel(id)
       if (checkId.length > 0) {
         // proses update data
         const result = await patchProductModel(setData, id)
-        console.log(result)
+        return helper.response(response, 202, 'Product Updated !', result)
       } else {
         return helper.response(response, 404, `Product By Id : ${id} Not Found`)
       }
