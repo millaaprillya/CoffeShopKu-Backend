@@ -1,10 +1,10 @@
 const {
   getCategoryModel,
   getCategoryModelById,
-  postCategoryModel
+  postCategoryModel,
+  deleteCategoryModel
 } = require('../model/category')
 const helper = require('../helper/response')
-const { removeAllListeners } = require('nodemon')
 // const qs = require('querystring')
 
 module.exports = {
@@ -48,6 +48,15 @@ module.exports = {
       )
     } catch (error) {
       return helper.response(response, 400, 'Category failed to post :( ')
+    }
+  },
+  deleteCategory: async (request, response) => {
+    try {
+      const { id } = request.params
+      const result = await deleteCategoryModel(id)
+      return helper.response(response, 200, `Delete ${id} Succes `, result)
+    } catch (error) {
+      return helper.response(response, 400, ' Bad request', error)
     }
   }
 }

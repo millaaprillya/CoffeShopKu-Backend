@@ -12,11 +12,10 @@ const qs = require('querystring')
 module.exports = {
   getProduct: async (request, response) => {
     try {
-      let { page, limit, search, sort } = request.query
+      let { page, limit } = request.query
       page = parseInt(page)
       limit = parseInt(limit)
-      search = ''
-      sort = 'product_price'
+
       const totalData = await getProductCountModel()
       const totalPage = Math.ceil(totalData / limit)
       const offset = page * limit - limit
@@ -38,7 +37,7 @@ module.exports = {
         nextLink: nextLink && `http://localhost:3000/product?${nextLink}`,
         prevLink: prevLink && `http://localhost:3000/product?${prevLink}`
       }
-      const result = await getProductModel(limit, offset, search, sort)
+      const result = await getProductModel(limit, offset)
       return helper.response(
         response,
         200,
