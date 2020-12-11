@@ -1,22 +1,33 @@
-// use depedensis  to help build you app
 const express = require('express')
+require('dotenv').config()
 const app = express()
 
-const morgan = require('morgan')
-app.use(morgan('dev')) // Morgan to tell user tracking your path
-
 const routesNavigation = require('./src/routesNavigation')
-app.use('/', routesNavigation) // spesifik routes path => file routesNavigation => routes file
+
+const morgan = require('morgan')
+app.use(morgan('dev'))
 
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-// Notice to user to tell link is not found [path]
+const cors = require('cors')
+app.use(cors())
+app.use((request, response, next) => {
+  response.header('Access-Control-Allow-Origin', '*')
+  response.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Request-With, Content-Type, Accept, Authorization'
+  )
+  next()
+})
+
+app.use('/', routesNavigation)
+
 app.get('*', (request, response) => {
-  response.status(404).send(' link you access not found ! ')
+  response.status(404).send('Path not found !')
 })
 
 app.listen(3000, () => {
-  console.log('Your apps listening port 3000')
+  console.log('Express app is listening on port 3000')
 })

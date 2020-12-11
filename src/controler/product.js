@@ -25,7 +25,7 @@ module.exports = {
       const nextLink =
         page < totalPage
           ? qs.stringify({ ...request.query, ...{ page: page + 1 } })
-          : null // page=...&limit=...
+          : null // page =...&limit=...
       console.log(request.query)
       console.log(qs.stringify(request.query))
       const pageInfo = {
