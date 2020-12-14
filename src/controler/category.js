@@ -101,8 +101,8 @@ module.exports = {
         response,
         200,
         ' Success :)',
-        result,
-        SetDataOrderId
+        SetDataOrderId,
+        result
       )
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)

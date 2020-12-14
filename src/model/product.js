@@ -4,7 +4,7 @@ module.exports = {
   getProductModel: (limit, offset, search, sort) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM product  INNER JOIN category ON product.category_id = category.category_id LIMIT ? OFFSET ? LIKE ? ${search}  ORDER BY ${sort} `,
+        `SELECT * FROM product  INNER JOIN category ON product.category_id = category.category_id LIMIT ? OFFSET ? LIKE ? %${search}%  ORDER BY ${sort} `,
         [limit, offset],
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))

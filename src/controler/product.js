@@ -77,6 +77,8 @@ module.exports = {
         category_id,
         product_name,
         product_price,
+        product_size,
+        product_list,
         product_status
       } = request.body
       // kasih validasi disini
@@ -84,6 +86,8 @@ module.exports = {
         category_id,
         product_name,
         product_price,
+        product_size,
+        product_list,
         product_created_at: new Date(),
         product_status
       }
@@ -93,6 +97,10 @@ module.exports = {
         return helper.response(response, 400, 'Product name cannot be empty')
       } else if (setData.product_price === '') {
         return helper.response(response, 400, 'Product price cannot be empty')
+      } else if (setData.product_size === '') {
+        return helper.response(response, 400, 'plis Insert size product')
+      } else if (setData.product_list === '') {
+        return helper.response(response, 400, 'plis Insert size product')
       } else if (setData.product_status === '') {
         return helper.response(response, 400, 'Please select status')
       } else {
