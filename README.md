@@ -40,3 +40,6 @@ DB_PASS=iyus123
 **2. POST**
 **3. PATCH**
 **4. DELETE**
+
+# Link Postman
+#https://documenter.getpostman.com/view/12328880/TVsoGqP6
