@@ -15,11 +15,11 @@ const qs = require('querystring')
 module.exports = {
   getProduct: async (request, response) => {
     try {
-      let { page, limit, sort, search } = request.query
+      let { page, limit, search, sort } = request.query
       page = parseInt(page)
       limit = parseInt(limit)
       search = ''
-      sort = 'Product_name'
+      sort = ''
       const totalData = await getProductCountModel()
       const totalPage = Math.ceil(totalData / limit)
       const offset = page * limit - limit
@@ -87,8 +87,18 @@ module.exports = {
         product_created_at: new Date(),
         product_status
       }
-      const result = await postProductModel(setData)
-      return helper.response(response, 200, 'Success Post Product', result)
+      if (setData.category_id === '') {
+        return helper.response(response, 400, 'Please select category')
+      } else if (setData.product_name === '') {
+        return helper.response(response, 400, 'Product name cannot be empty')
+      } else if (setData.product_price === '') {
+        return helper.response(response, 400, 'Product price cannot be empty')
+      } else if (setData.product_status === '') {
+        return helper.response(response, 400, 'Please select status')
+      } else {
+        const result = await postProductModel(setData)
+        return helper.response(response, 200, 'Success Post Product', result)
+      }
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)
     }

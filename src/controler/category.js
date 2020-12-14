@@ -9,14 +9,8 @@ const {
   getDataOrderModel,
   postDataOrderModel
 } = require('../model/detailOrder')
-const {
-  postHistoryModel,
-  patchHistoryModel,
-  getHistoryModelById
-} = require('../model/history')
+const { postHistoryModel, getHistoryModel } = require('../model/history')
 const helper = require('../helper/response')
-const { getProductByIdModel } = require('../model/product')
-const { getProduct } = require('./product')
 const response = require('../helper/response')
 // const qs = require('querystring')
 
@@ -109,6 +103,19 @@ module.exports = {
         ' Success :)',
         result,
         SetDataOrderId
+      )
+    } catch (error) {
+      return helper.response(response, 400, 'Bad Request', error)
+    }
+  },
+  getHistory: async (request, response) => {
+    try {
+      const result = await getHistoryModel
+      return helper.response(
+        response,
+        200,
+        'get Data history suscces full',
+        result
       )
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)

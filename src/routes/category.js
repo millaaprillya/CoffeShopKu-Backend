@@ -5,7 +5,8 @@ const {
   postCategory,
   deleteCategory,
   getOrder,
-  postOrder
+  postOrder,
+  getHistory
 } = require('../controler/category')
 
 // params
@@ -16,4 +17,5 @@ router.delete('/:id', deleteCategory)
 // order
 router.get('/:order', getOrder) // http://localhost:3000/product/1
 router.post('/:order', postOrder)
+router.get('//:history', getHistory)
 module.exports = router
