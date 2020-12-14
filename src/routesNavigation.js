@@ -6,7 +6,13 @@ router.use('/product', product)
 const category = require('./routes/category')
 router.use('/category', category)
 
-// const order = require('./routes/order')
-// router.use = ('/order', order)
+// const detailOrder = require('./routes/detailOrder')
+// router.use = ('/detailOrder', detailOrder)
+
+// const history = require('./routes/history')
+// router.use = ('/history', history)
+
+// const voucher = require('./routes/voucher')
+// router.use = ('/voucher', voucher)
 
 module.exports = router

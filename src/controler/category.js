@@ -4,7 +4,20 @@ const {
   postCategoryModel,
   deleteCategoryModel
 } = require('../model/category')
+const {
+  getOrderByhistory,
+  getDataOrderModel,
+  postDataOrderModel
+} = require('../model/detailOrder')
+const {
+  postHistoryModel,
+  patchHistoryModel,
+  getHistoryModelById
+} = require('../model/history')
 const helper = require('../helper/response')
+const { getProductByIdModel } = require('../model/product')
+const { getProduct } = require('./product')
+const response = require('../helper/response')
 // const qs = require('querystring')
 
 module.exports = {
@@ -57,6 +70,48 @@ module.exports = {
       return helper.response(response, 200, `Delete ${id} Succes `, result)
     } catch (error) {
       return helper.response(response, 400, ' Bad request', error)
+    }
+  },
+  getOrder: async (request, response) => {
+    try {
+      const result = await getDataOrderModel()
+      return helper.response(response, 200, 'Success Get category', result)
+    } catch (error) {
+      return helper.response(response, 400, 'Bad Request', error)
+    }
+  },
+  postOrder: async (request, response) => {
+    try {
+      const setData = {
+        history_invoice: Math.floor(100000 + Math.random() * 900000),
+        history_subtotal: 0,
+        history_created_at: new Date()
+      }
+      const result = await postHistoryModel(setData)
+      const { product_id, order_qty } = request.body
+      const SetDataOrderId = {
+        product_id,
+        order_qty,
+        order_created_at: new Date()
+      }
+      await postDataOrderModel(SetDataOrderId)
+      // const getProductId = await getProductById(productId);
+      // const dataProduct = getProductId[0];
+      // const productPrice = dataProduct.product_price;
+      // const tax = subtotal * 0.1;
+      // const totalPrice = subtotal + tax;
+      // const setData3 = {
+      //   history_subtotal: totalPrice,
+      // };
+      return helper.response(
+        response,
+        200,
+        ' Success :)',
+        result,
+        SetDataOrderId
+      )
+    } catch (error) {
+      return helper.response(response, 400, 'Bad Request', error)
     }
   }
 }
