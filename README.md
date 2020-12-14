@@ -42,4 +42,4 @@ DB_PASS=iyus123
 **4. DELETE**
 
 # Link Postman
-#https://documenter.getpostman.com/view/12328880/TVsoGqP6
+https://documenter.getpostman.com/view/12328880/TVsoGqP6
