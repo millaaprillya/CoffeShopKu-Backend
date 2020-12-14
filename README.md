@@ -1,5 +1,4 @@
 # CoffeShopKu-Backend
-<h1 align="center">ExpressJS - #Foody RESTfull API</h1>
 
 #background_projek. [More about Express](https://en.wikipedia.org/wiki/Express.js)
 
@@ -38,20 +37,6 @@ DB_PASS=iyus123
 ## End Point
 
 **1. GET**
-
-- `/product`(Get all product)
-
 **2. POST**
-
-- `/product` (Post product)
-  - `{ "product_name": "Nasi goreng", "category_id": 2, "product_harga": 50000 , "product_status" : 1 | 0}`
-
 **3. PATCH**
-
-- `/product/:id` (Update product by id)
-
-  - `{"product_name" : "Nasi  Remes", "category_id" : 1, "product_harga" : 100000, "product_status" : 1 | 0}`
-
 **4. DELETE**
-
-- `/product/:id` (Delete product by id)
