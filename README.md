@@ -31,7 +31,7 @@ Open .env file on your favorite code editor, and copy paste this code below :
 
 ```
 DB_HOST=localhost // Database host
-DB_PASS=iyus123
+DB_PASS=iyus123  // password database
 ```
 
 ## End Point
@@ -41,5 +41,6 @@ DB_PASS=iyus123
 **3. PATCH**
 **4. DELETE**
 
-# Link Postman
+# Postman
 https://documenter.getpostman.com/view/12328880/TVsoGqP6
+
