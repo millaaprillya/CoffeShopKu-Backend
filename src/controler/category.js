@@ -4,6 +4,7 @@ const {
   postCategoryModel,
   deleteCategoryModel
 } = require('../model/category')
+const { getProductByIdModel } = require('../model/product')
 const {
   getOrderByhistory,
   getDataOrderModel,
@@ -11,7 +12,6 @@ const {
 } = require('../model/detailOrder')
 const { postHistoryModel, getHistoryModel } = require('../model/history')
 const helper = require('../helper/response')
-const response = require('../helper/response')
 // const qs = require('querystring')
 
 module.exports = {
@@ -74,35 +74,41 @@ module.exports = {
       return helper.response(response, 400, 'Bad Request', error)
     }
   },
+
   postOrder: async (request, response) => {
     try {
-      const setData = {
+      const resultRequest = []
+      const resultStruture = []
+      const totalProduct = request.body.orders.length
+      let setData = {
         history_invoice: Math.floor(100000 + Math.random() * 900000),
-        history_subtotal: 0,
+        history_subtotal: totalProduct,
         history_created_at: new Date()
       }
-      const result = await postHistoryModel(setData)
-      const { product_id, order_qty } = request.body
-      const SetDataOrderId = {
-        product_id,
-        order_qty,
-        order_created_at: new Date()
+      const historyResult = await postHistoryModel(setData)
+      resultRequest.push(setData)
+
+      for (let i = 0; i < request.body.orders.length; i++) {
+        let { product_id, order_qty } = request.body.orders[i]
+        const product = await getProductByIdModel(product_id)
+        console.log(product[0].product_price)
+        let SetDataOrderId = {
+          product_id,
+          history_id: historyResult.history_id,
+          product_price: product[0].product_price,
+          order_price: product[0].product_price * order_qty,
+          order_qty,
+          order_created_at: new Date()
+        }
+        await postDataOrderModel(SetDataOrderId)
+        resultStruture.push(SetDataOrderId)
       }
-      await postDataOrderModel(SetDataOrderId)
-      // const getProductId = await getProductById(productId);
-      // const dataProduct = getProductId[0];
-      // const productPrice = dataProduct.product_price;
-      // const tax = subtotal * 0.1;
-      // const totalPrice = subtotal + tax;
-      // const setData3 = {
-      //   history_subtotal: totalPrice,
-      // };
       return helper.response(
         response,
         200,
         ' Success :)',
-        SetDataOrderId,
-        result
+        resultStruture,
+        resultRequest
       )
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)

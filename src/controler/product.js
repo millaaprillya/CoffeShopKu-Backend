@@ -18,8 +18,8 @@ module.exports = {
       let { page, limit, search, sort } = request.query
       page = parseInt(page)
       limit = parseInt(limit)
-      search = ''
-      sort = ''
+      // search = ''
+      // sort = ''
       const totalData = await getProductCountModel()
       const totalPage = Math.ceil(totalData / limit)
       const offset = page * limit - limit
@@ -41,7 +41,7 @@ module.exports = {
         nextLink: nextLink && `http://localhost:3000/product?${nextLink}`,
         prevLink: prevLink && `http://localhost:3000/product?${prevLink}`
       }
-      const result = await getProductModel(limit, offset, search, sort)
+      const result = await getProductModel(limit, offset)
       return helper.response(
         response,
         200,
