@@ -113,6 +113,7 @@ module.exports = {
   },
   patchProduct: async (req, res) => {
     try {
+      console.log(req)
       const { id } = req.params
       const {
         category_id,
@@ -154,10 +155,19 @@ module.exports = {
   },
   postVoucher: async (request, response) => {
     try {
-      const { voucher_id, voucher_name, voucher_status } = request.body
+      const {
+        voucher_id,
+        voucher_name,
+        voucher_diskon,
+        voucher_list,
+        voucher_status
+      } = request.body
+
       const setData = {
         voucher_id,
         voucher_name,
+        voucher_diskon,
+        voucher_list,
         voucher_created_at: new Date(),
         voucher_status
       }
@@ -166,6 +176,7 @@ module.exports = {
         response,
         200,
         'Post voucher Product Succes :)',
+
         result
       )
     } catch (error) {
