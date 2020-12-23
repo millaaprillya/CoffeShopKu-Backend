@@ -11,6 +11,8 @@ const {
 } = require('../model/product')
 const helper = require('../helper/response')
 const qs = require('querystring')
+const redis = require('redis')
+const client = redis.createClient()
 
 module.exports = {
   getProduct: async (request, response) => {
@@ -42,6 +44,15 @@ module.exports = {
         prevLink: prevLink && `http://localhost:3000/product?${prevLink}`
       }
       const result = await getProductModel(limit, offset)
+      const newData = {
+        result,
+        pageInfo
+      }
+      client.set(
+        `getproduct: ${JSON.stringify(request.query)}`,
+        3600,
+        JSON.stringify(newData)
+      )
       return helper.response(
         response,
         200,
@@ -58,6 +69,7 @@ module.exports = {
       const { id } = request.params
       const result = await getProductByIdModel(id)
       if (result.length > 0) {
+        client.setex(`getproductbyid:${id}`, 3600, JSON.stringify(result))
         return helper.response(
           response,
           200,
@@ -88,9 +100,11 @@ module.exports = {
         product_price,
         product_size,
         product_list,
+        product_image: request.file === undefined ? '' : request.file.filename,
         product_created_at: new Date(),
         product_status
       }
+      console.log(setData)
       if (setData.category_id === '') {
         return helper.response(response, 400, 'Please select category')
       } else if (setData.product_name === '') {

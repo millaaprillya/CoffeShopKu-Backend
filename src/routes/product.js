@@ -10,12 +10,18 @@ const {
   postVoucher,
   deleteVoucher
 } = require('../controler/product')
+const {
+  getProductByIdRedis,
+  clearDataProductRedis,
+  getProductRedis
+} = require('../middleware/redis')
+const uploadImage = require('../middleware/multer')
 
 // product
-router.get('/', authorization, getProduct) // http://localhost:3000/product
-router.get('/:id', getProductById) // http://localhost:3000/product/1
-router.post('/', postProduct)
-router.patch('/:id', patchProduct)
+router.get('/', authorization, getProductRedis, getProduct) // http://localhost:3000/product
+router.get('/:id', getProductByIdRedis, getProductById) // http://localhost:3000/product/1
+router.post('/', uploadImage, postProduct)
+router.patch('/:id', clearDataProductRedis, patchProduct)
 router.delete('/:id', deleteProduct)
 
 // voucher

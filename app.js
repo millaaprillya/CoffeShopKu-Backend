@@ -6,6 +6,7 @@ const routesNavigation = require('./src/routesNavigation')
 
 const morgan = require('morgan')
 app.use(morgan('dev'))
+app.use(express.static('uploads'))
 
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
@@ -28,6 +29,6 @@ app.get('*', (request, response) => {
   response.status(404).send('Path not found !')
 })
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log('Express app is listening on port 3000')
 })

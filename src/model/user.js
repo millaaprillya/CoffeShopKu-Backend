@@ -1,5 +1,4 @@
 const connection = require('../config/mysql')
-const helper = require('../helper/response')
 
 module.exports = {
   registerUserModel: (setData) => {
