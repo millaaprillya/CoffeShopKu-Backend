@@ -1,4 +1,6 @@
 const router = require('express').Router()
+const { authorization, authorizationAdmin } = require('../middleware/auth')
+const { getCategoryRedis } = require('../middleware/redis')
 const {
   getCategory,
   getCategoryId,
@@ -10,12 +12,12 @@ const {
 } = require('../controler/category')
 
 // params
-router.get('/', getCategory) // http://localhost:3000/product
-router.get('/:id', getCategoryId) // http://localhost:3000/product/1
-router.post('/', postCategory)
-router.delete('/:id', deleteCategory)
+router.get('/', authorization, getCategoryRedis, getCategory) // http://localhost:3000/product
+router.get('/:id', authorization, getCategoryId) // http://localhost:3000/product/1
+router.post('/', authorizationAdmin, postCategory)
+router.delete('/:id', authorizationAdmin, deleteCategory)
 // order
-router.get('/:order', getOrder) // http://localhost:3000/product/1
-router.post('/:order', postOrder)
-router.get('//:history', getHistory)
+router.get('/:order', authorization, getOrder)
+router.post('/:order', authorization, postOrder)
+router.get('/:history', authorization, getHistory)
 module.exports = router

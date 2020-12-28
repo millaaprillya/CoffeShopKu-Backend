@@ -13,11 +13,13 @@ const helper = require('../helper/response')
 const qs = require('querystring')
 const redis = require('redis')
 const client = redis.createClient()
+const fs = require('fs')
+const response = require('../helper/response')
 
 module.exports = {
   getProduct: async (request, response) => {
     try {
-      let { page, limit, search, sort } = request.query
+      let { page, limit } = request.query
       page = parseInt(page)
       limit = parseInt(limit)
       // search = ''
@@ -48,18 +50,13 @@ module.exports = {
         result,
         pageInfo
       }
+      console.log(newData)
       client.set(
         `getproduct: ${JSON.stringify(request.query)}`,
         3600,
         JSON.stringify(newData)
       )
-      return helper.response(
-        response,
-        200,
-        'Success Get Product',
-        result,
-        pageInfo
-      )
+      return helper.response(response, 200, 'Success Get Product', newData)
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)
     }
@@ -143,6 +140,9 @@ module.exports = {
         product_status
       }
       const checkId = await getProductByIdModel(id)
+      fs.unlink(`./uploads/${checkId[0].product_image}`, async (error) => {
+        if (error) return helper.response(response, 400, 'delete gagal')
+      })
       if (checkId.length > 0) {
         const result = await patchProductModel(id, setData)
         return helper.response(res, 200, 'DataUpdated', result)
@@ -156,6 +156,11 @@ module.exports = {
   deleteProduct: async (request, response) => {
     try {
       const { id } = request.params
+      const productId = await getProductByIdModel(id)
+      console.log(productId)
+      fs.unlink(`./uploads/${productId[0].product_image}`, async (error) => {
+        if (error) return helper.response(response, 400, 'deleted gagal')
+      })
       const result = await deleteProductModel(id)
       return helper.response(
         response,

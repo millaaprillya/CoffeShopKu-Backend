@@ -12,12 +12,18 @@ const {
 } = require('../model/detailOrder')
 const { postHistoryModel, getHistoryModel } = require('../model/history')
 const helper = require('../helper/response')
-// const qs = require('querystring')
+const redis = require('redis')
+const client = redis.createClient()
 
 module.exports = {
   getCategory: async (request, response) => {
     try {
       const result = await getCategoryModel()
+      client.set(
+        `getcategory: ${JSON.stringify(request.query)}`,
+        3600,
+        JSON.stringify(result)
+      )
       return helper.response(response, 200, 'Success Get category', result)
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)
@@ -79,25 +85,34 @@ module.exports = {
     try {
       const resultRequest = []
       const resultStruture = []
-      const totalProduct = request.body.orders.length
-      let setData = {
+      let totalProduct = 0
+      for (let i = 0; i < request.body.orders.length; i++) {
+        let { product_id, order_qty } = request.body.orders[i]
+        const product = await getProductByIdModel(product_id)
+        if (product[0] == undefined) {
+          return helper.response(response, 400, 'Produknya jatoh di jalan')
+        }
+        console.log(product[0].product_price)
+        totalProduct += order_qty * product[0].product_price
+      }
+      const setData = {
         history_invoice: Math.floor(100000 + Math.random() * 900000),
         history_subtotal: totalProduct,
         history_created_at: new Date()
       }
       const historyResult = await postHistoryModel(setData)
       resultRequest.push(setData)
-
       for (let i = 0; i < request.body.orders.length; i++) {
         let { product_id, order_qty } = request.body.orders[i]
         const product = await getProductByIdModel(product_id)
         console.log(product[0].product_price)
-        let SetDataOrderId = {
+        const SetDataOrderId = {
           product_id,
           history_id: historyResult.history_id,
           product_price: product[0].product_price,
           order_price: product[0].product_price * order_qty,
-          order_qty,
+          order_qty: order_qty,
+          order_total: totalProduct,
           order_created_at: new Date()
         }
         await postDataOrderModel(SetDataOrderId)

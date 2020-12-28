@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { authorization } = require('../middleware/auth')
+const { authorization, authorizationAdmin } = require('../middleware/auth')
 const {
   getProduct,
   getProductById,
@@ -19,14 +19,14 @@ const uploadImage = require('../middleware/multer')
 
 // product
 router.get('/', authorization, getProductRedis, getProduct) // http://localhost:3000/product
-router.get('/:id', getProductByIdRedis, getProductById) // http://localhost:3000/product/1
-router.post('/', uploadImage, postProduct)
-router.patch('/:id', clearDataProductRedis, patchProduct)
-router.delete('/:id', deleteProduct)
+router.get('/:id', authorization, getProductByIdRedis, getProductById) // http://localhost:3000/product/1
+router.post('/', authorization, uploadImage, postProduct)
+router.patch('/:id', authorizationAdmin, clearDataProductRedis, patchProduct)
+router.delete('/:id', authorization, deleteProduct)
 
 // voucher
 // router.get('/:voucher', getVoucher)
-router.post('/:voucher', postVoucher)
-router.delete('/:voucher/:id', deleteVoucher)
+router.post('/:voucher', authorizationAdmin, postVoucher)
+router.delete('/:voucher/:id', authorizationAdmin, deleteVoucher)
 
 module.exports = router

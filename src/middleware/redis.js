@@ -1,6 +1,4 @@
 const redis = require('redis')
-const response = require('../helper/response')
-
 const client = redis.createClient()
 const helper = require('../helper/response')
 
@@ -51,5 +49,23 @@ module.exports = {
       }
       next()
     })
+  },
+  getCategoryRedis: (request, response, next) => {
+    client.get(
+      `getcategory:${JSON.stringify(request.query)}`,
+      (error, result) => {
+        if (!error && result != null) {
+          const newResult = JSON.parse(result)
+          return helper.response(
+            response,
+            200,
+            'Success Get Product',
+            newResult.result
+          )
+        } else {
+          next()
+        }
+      }
+    )
   }
 }
