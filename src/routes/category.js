@@ -3,21 +3,27 @@ const { authorization, authorizationAdmin } = require('../middleware/auth')
 const { getCategoryRedis } = require('../middleware/redis')
 const {
   getCategory,
+  getCategoryName,
   getCategoryId,
   postCategory,
   deleteCategory,
+  getCategoryIdProduct,
   getOrder,
   postOrder,
-  getHistory
+  getHistory,
+  getHistoryByid
 } = require('../controler/category')
 
 // params
-router.get('/', authorization, getCategoryRedis, getCategory) // http://localhost:3000/product
-router.get('/:id', authorization, getCategoryId) // http://localhost:3000/product/1
+router.get('/', authorizationAdmin, getCategory)
+router.get('/:id', authorizationAdmin, getCategoryId)
+router.get('/product/:id', authorizationAdmin, getCategoryIdProduct)
+router.get('/search', authorizationAdmin, getCategoryName)
 router.post('/', authorizationAdmin, postCategory)
 router.delete('/:id', authorizationAdmin, deleteCategory)
 // order
 router.get('/:order', authorization, getOrder)
 router.post('/:order', authorization, postOrder)
-router.get('/:history', authorization, getHistory)
+router.get('/history', authorization, getHistory)
+router.get('/history/:id', authorization, getHistoryByid)
 module.exports = router

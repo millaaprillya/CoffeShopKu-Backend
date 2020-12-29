@@ -11,7 +11,8 @@ module.exports = {
   getHistoryModelById: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT * FROM history WHERE history_id ',
+        'SELECT * FROM history WHERE history_id = ?',
+        id,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
         }

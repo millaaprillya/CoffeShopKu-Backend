@@ -31,7 +31,8 @@ module.exports = {
         return helper.response(response, 400, error.message)
       } else {
         // add condition can admin
-        if (result.user_role === 1) {
+        console.log(result)
+        if (result.user_role == 1) {
           request.token = result
           next()
         } else {

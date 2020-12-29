@@ -14,7 +14,6 @@ const qs = require('querystring')
 const redis = require('redis')
 const client = redis.createClient()
 const fs = require('fs')
-const response = require('../helper/response')
 
 module.exports = {
   getProduct: async (request, response) => {
@@ -122,35 +121,35 @@ module.exports = {
       return helper.response(response, 400, 'Bad Request', error)
     }
   },
-  patchProduct: async (req, res) => {
+  patchProduct: async (request, response) => {
     try {
-      console.log(req)
-      const { id } = req.params
+      const { id } = request.params
       const {
         category_id,
         product_name,
         product_price,
         product_status
-      } = req.body
+      } = request.body
       const setData = {
         category_id,
         product_name,
         product_price,
+        product_image: request.file === undefined ? '' : request.file.filename,
         product_updated_at: new Date(),
         product_status
       }
       const checkId = await getProductByIdModel(id)
-      fs.unlink(`./uploads/${checkId[0].product_image}`, async (error) => {
-        if (error) return helper.response(response, 400, 'delete gagal')
-      })
       if (checkId.length > 0) {
+        fs.unlink(`./uploads/${checkId[0].product_image}`, async (error) => {
+          if (error) return helper.response(response, 400, 'delete gagal')
+        })
         const result = await patchProductModel(id, setData)
-        return helper.response(res, 200, 'DataUpdated', result)
+        return helper.response(response, 200, 'DataUpdated', result)
       } else {
-        return helper.response(res, 404, `Data Not Found By Id ${id}`)
+        return helper.response(response, 404, `Data Not Found By Id ${id}`)
       }
     } catch (error) {
-      return helper.response(res, 400, 'Data Failed Update', error)
+      return helper.response(response, 400, 'Data Failed Update', error)
     }
   },
   deleteProduct: async (request, response) => {
@@ -214,7 +213,7 @@ module.exports = {
     try {
       const { id } = request.params
       const result = await deleteVoucherModel(id)
-      return helper.response(response, 200, 'Delete  Succes ', result)
+      return helper.response(response, 200, `Deleted Voucher id ${id}`, result)
     } catch (error) {
       return helper.response(response, 400, ' Bad request', error)
     }

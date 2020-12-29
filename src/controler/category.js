@@ -2,20 +2,70 @@ const {
   getCategoryModel,
   getCategoryModelById,
   postCategoryModel,
-  deleteCategoryModel
+  deleteCategoryModel,
+  getCategoryNameModel,
+  productbyCategory
 } = require('../model/category')
 const { getProductByIdModel } = require('../model/product')
 const {
-  getOrderByhistory,
+  // getOrderByhistory,
   getDataOrderModel,
   postDataOrderModel
 } = require('../model/detailOrder')
-const { postHistoryModel, getHistoryModel } = require('../model/history')
+const {
+  // postHistoryModel,
+  getHistoryModel,
+  getHistoryModelById
+} = require('../model/history')
 const helper = require('../helper/response')
 const redis = require('redis')
+
 const client = redis.createClient()
 
 module.exports = {
+  getCategoryIdProduct: async (request, response) => {
+    const { id } = request.params
+    try {
+      const productCategory = await productbyCategory(id)
+      const result = productCategory
+      return helper.response(
+        response,
+        200,
+        `Get Data by ${id} succesfull yey`,
+        result
+      )
+    } catch (error) {
+      return helper.response(response, 400, ' bad request', error)
+    }
+  },
+  getCategoryName: async (request, response) => {
+    const { keyword } = request.query
+    const resultData = await getCategoryNameModel(keyword)
+    try {
+      const searchResult = await getCategoryNameModel(keyword)
+      const result = {
+        resultData,
+        searchResult
+      }
+      if (searchResult.length > 0) {
+        client.setex(
+          ` getcategorybynamemodel:${keyword}`,
+          3600,
+          JSON.stringify(result)
+        )
+        return helper.response(
+          response,
+          201,
+          'Success Get Category By Name',
+          result
+        )
+      } else {
+        return helper.response(response, 404, 'hmm category not found ', result)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
   getCategory: async (request, response) => {
     try {
       const result = await getCategoryModel()
@@ -90,7 +140,7 @@ module.exports = {
         let { product_id, order_qty } = request.body.orders[i]
         const product = await getProductByIdModel(product_id)
         if (product[0] == undefined) {
-          return helper.response(response, 400, 'Produknya jatoh di jalan')
+          return helper.response(response, 400, 'Product not found :((')
         }
         console.log(product[0].product_price)
         totalProduct += order_qty * product[0].product_price
@@ -118,15 +168,25 @@ module.exports = {
         await postDataOrderModel(SetDataOrderId)
         resultStruture.push(SetDataOrderId)
       }
+
       return helper.response(
         response,
         200,
-        ' Success :)',
+        ' Success :) Thank you for Order ',
         resultStruture,
         resultRequest
       )
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)
+    }
+  },
+  getHistoryByid: async (request, response) => {
+    try {
+      const { id } = request.params
+      const result = await getHistoryModelById(id)
+      return helper.response(response, 200, `History id ${id}`, result)
+    } catch (error) {
+      return helper.response(response, 'Bad Request', error)
     }
   },
   getHistory: async (request, response) => {
