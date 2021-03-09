@@ -18,7 +18,8 @@ this website build using Express js, Node js for more info cek here</h3>
 
 1. <a href="https://nodejs.org/en/download/">Node Js</a>
 2. Node_modules
-3. <a href="https://www.getpostman.com/">Postman</a>
+3. <a href="https://documenter.getpostman.com/view/12328880/TVsoGqP6
+">Postman</a>
 4. Web Server (ex. localhost)
 
 ## How to run the app ?
@@ -44,8 +45,6 @@ password='iyus123'
 database=pos_app
 ```
 
+## License 
 
-
-# Postman
-https://documenter.getpostman.com/view/12328880/TVsoGqP6
-
+© [Milla Aprillya Indriyani](https://github.com/millaaprillya)
