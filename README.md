@@ -1,6 +1,9 @@
 <h1 align='center'>Express JS - CoffeeShopku</h1>
 
-#background_projek. [More about Express](https://en.wikipedia.org/wiki/Express.js)
+#This website online foods for ordering mny food, The harder it is for your hungry customers to find the ordering buttons on your website, the more customers you will lose.
+this website build using Express js, Node js for more info cek here
+
+. [More about Express](https://en.wikipedia.org/wiki/Express.js)
 
 ## Built With
 
