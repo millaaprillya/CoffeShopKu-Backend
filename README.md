@@ -4,8 +4,8 @@
     ·
     <a href="https://github.com/millaaprillya/CoffeShopKu-Vue.js/pulls">Request Feature</a>
   </p>
-<h5>This website online foods for ordering mny food, The harder it is for your hungry customers to find the ordering buttons on your website, the more customers you will lose.
-this website build using Express js, Node js for more info cek here</h5>
+<h4>This website online foods for ordering mny food, The harder it is for your hungry customers to find the ordering buttons on your website, the more customers you will lose.
+this website build using Express js, Node js for more info cek here</h4>
 
 . [More about Express](https://en.wikipedia.org/wiki/Express.js)
 
