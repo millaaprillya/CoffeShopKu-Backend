@@ -1,4 +1,4 @@
-# CoffeShopKu-Backend
+<h1 align='center'>Express JS - CoffeeShopku</h1>
 
 #background_projek. [More about Express](https://en.wikipedia.org/wiki/Express.js)
 
@@ -30,16 +30,14 @@
 Open .env file on your favorite code editor, and copy paste this code below :
 
 ```
-DB_HOST=localhost // Database host
-DB_PASS=iyus123  // password database
+port = 3000
+host=localhost
+user=root
+password='iyus123'
+database=pos_app
 ```
 
-## End Point
 
-**1. GET**
-**2. POST**
-**3. PATCH**
-**4. DELETE**
 
 # Postman
 https://documenter.getpostman.com/view/12328880/TVsoGqP6
