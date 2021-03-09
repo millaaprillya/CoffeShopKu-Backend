@@ -1,6 +1,6 @@
 <h1 align='center'>Express JS - CoffeeShopku</h1>
   <p align="center">
-      <a href="https://github.com/millaaprillya/CoffeShopKu-Backend/issuess">Report Bug</a>
+      <a href="https://github.com/millaaprillya/CoffeShopKu-Backend/issues">Report Bug</a>
     ·
     <a href="https://github.com/millaaprillya/CoffeShopKu-Backend/pulls">Request Feature</a>
   </p>
@@ -31,7 +31,8 @@ this website build using Express js, Node js for more info cek here</h3>
 5. Create a database with the name #onlineshop, and Import file sql to **phpmyadmin**
 6. Open Postman desktop application or Chrome web app extension that has installed before
 7. Choose HTTP Method and enter request url.(ex. localhost:3000/)
-8. You can see all the end point [here](#end-point)
+8. You can see all the end point [here](https://documenter.getpostman.com/view/12328880/TVsoGqP6
+)
 
 ## Set up .env file
 
@@ -41,7 +42,7 @@ Open .env file on your favorite code editor, and copy paste this code below :
 port = 3000
 host=localhost
 user=root
-password='iyus123'
+password=''
 database=pos_app
 ```
 
